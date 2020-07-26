@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include <stdint.h>
-#ifdef WIN32
+#ifdef ON_WINDOWS
 typedef enum _camera_pixel_format
 {
 	PixelFormatGray = 1,//灰度
@@ -15,8 +15,8 @@ typedef struct __img {
 #include <stdio.h>
 #define FIL FILE
 #else
-#include"sc_camera_common.h"
-#endif // WIN32
+#include"sc_camera.h"
+#endif // ON_WINDOWS
 
 #pragma  pack(1)
 typedef struct tagBITMAPFILEHEADER {
