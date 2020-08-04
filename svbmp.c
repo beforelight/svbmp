@@ -270,11 +270,10 @@ BITMAPINFOHEADER bmih;
 
 int BMP_FileWrite(FIL* fp, const void* buff, uint32_t btw)
 {
-#ifdef WIN32
+#ifdef ON_WINDOWS
 	fwrite(buff, 1, btw, fp);
 #else
-#endif // WIN32
-	return 0;
+#endif // ON_WINDOWS
 }
 
 int BMP_Save(FIL* fp, img_t* img)
