@@ -9,17 +9,8 @@
 #define RGB565(r,g,b) (uint16_t)(((r<<8)&0xF800U)|((g<<3)&0x7E0U)|((b>>3)&0x1FU))
 int main()
 {
-	//https://www.cnblogs.com/wainiwann/p/7086844.html
-	sizeof(BITMAPFILEHEADER);
-	sizeof(BITMAPINFOHEADER);
-	sizeof(BITMAPGRAYHEADER);
-	sizeof(BITMAPRGBHEADER);
-
-
-
 	img_t a, b;
 	FILE* abmp, *bbmp;
-
 
 	//灰度图像测试
 	a.format = PixelFormatGray;

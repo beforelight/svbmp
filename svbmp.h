@@ -1,4 +1,5 @@
-﻿#pragma once
+﻿#ifndef __SVBMP_H__
+#define __SVBMP_H__
 #include <stdint.h>
 #ifdef ON_WINDOWS
 typedef enum _camera_pixel_format
@@ -15,50 +16,10 @@ typedef struct __img {
 #include <stdio.h>
 #define FIL FILE
 #else
-#include"sc_camera.h"
+#include "sc_camera.h"
+#include <fatfs/source/ff.h>
 #endif // ON_WINDOWS
-
-#pragma  pack(1)
-typedef struct tagBITMAPFILEHEADER {
-	/* bmfh 14bytes */
-	uint16_t bfType;
-	uint32_t bfSize;
-	uint16_t bfReserved1;
-	uint16_t bfReserved2;
-	uint32_t bfOffBits;
-} BITMAPFILEHEADER;
-
-#pragma  pack(1)
-typedef struct tagBITMAPINFOHEADER {
-	/* bmih 54bytes */
-	BITMAPFILEHEADER bmfh;
-	uint32_t biSize;
-	int32_t biWidth;
-	int32_t biHeight;
-	uint16_t biPlanes;
-	uint16_t biBitCount;
-	uint32_t biCompression;
-	uint32_t biSizeImage;
-	int32_t biXPelsPerMeter;
-	int32_t biYPelsPerMeter;
-	uint32_t biClrUsed;
-	uint32_t biClrImportant;
-} BITMAPINFOHEADER;
-
-#pragma  pack(1)
-typedef struct tagBITMAPGRAYHEADER {
-	/* bmgh 1080bytes */
-	//BITMAPINFOHEADER bmif;
-	uint32_t bmColors[256];
-} BITMAPGRAYHEADER;
-
-#pragma  pack(1)
-typedef struct tagBITMAPRGBHEADER {
-	/* bmrh 72bytes */
-	//BITMAPINFOHEADER bmif;
-	uint32_t bmColors[4];
-} BITMAPRGBHEADER;
-
 
 int BMP_FileWrite(FIL* fp, const void* buff, uint32_t btw);
 int BMP_Save(FIL* fp, img_t* img);
+#endif //__SVBMP_H__

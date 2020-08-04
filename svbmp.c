@@ -1,6 +1,51 @@
-﻿#include "svbmp.h"
+﻿
+#include "svbmp.h"
+#ifndef ON_WINDOWS
+#include <utilities/fsl_debug_console.h>
+#endif // !ON_WINDOWS
 #define BMP_GRAY_COLORS(x) (uint32_t)((x)|(x<<8)|(x<<16))
-BITMAPGRAYHEADER bmp_gray_color_palette = {
+#pragma  pack(1)
+typedef struct tagBITMAPFILEHEADER {
+    /* bmfh 14bytes */
+    uint16_t bfType;
+    uint32_t bfSize;
+    uint16_t bfReserved1;
+    uint16_t bfReserved2;
+    uint32_t bfOffBits;
+} BITMAPFILEHEADER;
+
+#pragma  pack(1)
+typedef struct tagBITMAPINFOHEADER {
+    /* bmih 54bytes */
+    BITMAPFILEHEADER bmfh;
+    uint32_t biSize;
+    int32_t biWidth;
+    int32_t biHeight;
+    uint16_t biPlanes;
+    uint16_t biBitCount;
+    uint32_t biCompression;
+    uint32_t biSizeImage;
+    int32_t biXPelsPerMeter;
+    int32_t biYPelsPerMeter;
+    uint32_t biClrUsed;
+    uint32_t biClrImportant;
+} BITMAPINFOHEADER;
+
+#pragma  pack(1)
+typedef struct tagBITMAPGRAYHEADER {
+    /* bmgh 1080bytes */
+    //BITMAPINFOHEADER bmif;
+    uint32_t bmColors[256];
+} BITMAPGRAYHEADER;
+
+#pragma  pack(1)
+typedef struct tagBITMAPRGBHEADER {
+    /* bmrh 72bytes */
+    //BITMAPINFOHEADER bmif;
+    uint32_t bmColors[4];
+} BITMAPRGBHEADER;
+
+const BITMAPGRAYHEADER bmp_gray_color_palette = {
 .bmColors[0] = BMP_GRAY_COLORS(0),
 .bmColors[1] = BMP_GRAY_COLORS(1),
 .bmColors[2] = BMP_GRAY_COLORS(2),
@@ -259,7 +304,7 @@ BITMAPGRAYHEADER bmp_gray_color_palette = {
 .bmColors[255] = BMP_GRAY_COLORS(255),
 };
 
-BITMAPRGBHEADER bmp_rgb_color_palette = {
+const BITMAPRGBHEADER bmp_rgb_color_palette = {
 	.bmColors[0] = 0xF800,
 	.bmColors[1] = 0x07E0,
 	.bmColors[2] = 0x001F,
@@ -273,7 +318,11 @@ int BMP_FileWrite(FIL* fp, const void* buff, uint32_t btw)
 #ifdef ON_WINDOWS
 	fwrite(buff, 1, btw, fp);
 #else
+	UINT bw =0;
+    f_write(fp,buff,btw,&bw);
+    if(bw!=btw){PRINTF("the volume got full\r\n");}
 #endif // ON_WINDOWS
+	return 0;
 }
 
 int BMP_Save(FIL* fp, img_t* img)
